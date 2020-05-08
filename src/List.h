@@ -29,9 +29,9 @@
 // TODO: this can be removed in v3.1 when List::sort() is removed
 typedef int (*list_cmp_func)(const void* v1, const void* v2);
 
-enum list_order { LIST_ORDERED, LIST_UNORDERED };
+enum class ListOrder : int { ORDERED, UNORDERED };
 
-template<typename T, list_order Order = LIST_ORDERED>
+template<typename T, ListOrder Order = ListOrder::ORDERED>
 class List {
 public:
 
@@ -216,7 +216,7 @@ public:
 		// For data where we don't care about ordering, we don't care about keeping
 		// the list in the same order when removing an element. Just swap the last
 		// element with the element being removed.
-		if ( Order == LIST_ORDERED )
+		if constexpr ( Order == ListOrder::ORDERED )
 			{
 			--num_entries;
 
@@ -344,7 +344,7 @@ protected:
 
 
 // Specialization of the List class to store pointers of a type.
-template<typename T, list_order Order = LIST_ORDERED>
+template<typename T, ListOrder Order = ListOrder::ORDERED>
 using PList = List<T*, Order>;
 
 // Popular type of list: list of strings.
